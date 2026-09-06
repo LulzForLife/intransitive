@@ -4,7 +4,7 @@ __author__ = "Kiran Lowe"
 
 __email__ = "kiranmjlowe@gmail.com"
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 
 from typing import TypeAlias, Self
 
@@ -33,88 +33,88 @@ CAPTURES = {
 
 Square: TypeAlias = int
 A1: Square = 0
-A2: Square = 1
-A3: Square = 2
-A4: Square = 3
-A5: Square = 4
-A6: Square = 5
-A7: Square = 6
-A8: Square = 7
-A9: Square = 8
-B1: Square = 9
+B1: Square = 1
+C1: Square = 2
+D1: Square = 3
+E1: Square = 4
+F1: Square = 5
+G1: Square = 6
+H1: Square = 7
+I1: Square = 8
+A2: Square = 9
 B2: Square = 10
-B3: Square = 11
-B4: Square = 12
-B5: Square = 13
-B6: Square = 14
-B7: Square = 15
-B8: Square = 16
-B9: Square = 17
-C1: Square = 18
-C2: Square = 19
+C2: Square = 11
+D2: Square = 12
+E2: Square = 13
+F2: Square = 14
+G2: Square = 15
+H2: Square = 16
+I2: Square = 17
+A3: Square = 18
+B3: Square = 19
 C3: Square = 20
-C4: Square = 21
-C5: Square = 22
-C6: Square = 23
-C7: Square = 24
-C8: Square = 25
-C9: Square = 26
-D1: Square = 27
-D2: Square = 28
-D3: Square = 29
+D3: Square = 21
+E3: Square = 22
+F3: Square = 23
+G3: Square = 24
+H3: Square = 25
+I3: Square = 26
+A4: Square = 27
+B4: Square = 28
+C4: Square = 29
 D4: Square = 30
-D5: Square = 31
-D6: Square = 32
-D7: Square = 33
-D8: Square = 34
-D9: Square = 35
-E1: Square = 36
-E2: Square = 37
-E3: Square = 38
-E4: Square = 39
+E4: Square = 31
+F4: Square = 32
+G4: Square = 33
+H4: Square = 34
+I4: Square = 35
+A5: Square = 36
+B5: Square = 37
+C5: Square = 38
+D5: Square = 39
 E5: Square = 40
-E6: Square = 41
-E7: Square = 42
-E8: Square = 43
-E9: Square = 44
-F1: Square = 45
-F2: Square = 46
-F3: Square = 47
-F4: Square = 48
-F5: Square = 49
+F5: Square = 41
+G5: Square = 42
+H5: Square = 43
+I5: Square = 44
+A6: Square = 45
+B6: Square = 46
+C6: Square = 47
+D6: Square = 48
+E6: Square = 49
 F6: Square = 50
-F7: Square = 51
-F8: Square = 52
-F9: Square = 53
-G1: Square = 54
-G2: Square = 55
-G3: Square = 56
-G4: Square = 57
-G5: Square = 58
-G6: Square = 59
+G6: Square = 51
+H6: Square = 52
+I6: Square = 53
+A7: Square = 54
+B7: Square = 55
+C7: Square = 56
+D7: Square = 57
+E7: Square = 58
+F7: Square = 59
 G7: Square = 60
-G8: Square = 61
-G9: Square = 62
-H1: Square = 63
-H2: Square = 64
-H3: Square = 65
-H4: Square = 66
-H5: Square = 67
-H6: Square = 68
-H7: Square = 69
+H7: Square = 61
+I7: Square = 62
+A8: Square = 63
+B8: Square = 64
+C8: Square = 65
+D8: Square = 66
+E8: Square = 67
+F8: Square = 68
+G8: Square = 69
 H8: Square = 70
-H9: Square = 71
-I1: Square = 72
-I2: Square = 73
-I3: Square = 74
-I4: Square = 75
-I5: Square = 76
-I6: Square = 77
-I7: Square = 78
-I8: Square = 79
+I8: Square = 71
+A9: Square = 72
+B9: Square = 73
+C9: Square = 74
+D9: Square = 75
+E9: Square = 76
+F9: Square = 77
+G9: Square = 78
+H9: Square = 79
 I9: Square = 80
 
-SQUARES = [A1, A2, A3, A4, A5, A6, A7, A8, A9, B1, B2, B3, B4, B5, B6, B7, B8, B9, C1, C2, C3, C4, C5, C6, C7, C8, C9, D1, D2, D3, D4, D5, D6, D7, D8, D9, E1, E2, E3, E4, E5, E6, E7, E8, E9, F1, F2, F3, F4, F5, F6, F7, F8, F9, G1, G2, G3, G4, G5, G6, G7, G8, G9, H1, H2, H3, H4, H5, H6, H7, H8, H9, I1, I2, I3, I4, I5, I6, I7, I8, I9]
+SQUARES = [i for i in range(81)]
 
 FILE_NAMES = ["a", "b", "c", "d", "e", "f", "g", "h", "i"]
 RANK_NAMES = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
@@ -127,7 +127,9 @@ FEN_REGEX = r"^[a-zA-Z0-9]+(\/[a-zA-Z0-9]+){8}\s[br]\s\d+$"
 
 BLUE_WIN_MASK = 1 << 80
 RED_WIN_MASK = 1
-FULL_BOARD = (1 << 81) - 1
+BOARD_MASK = (1 << 81) - 1
+NOT_FILE_A_MASK = 0x1feff7fbfdfeff7fbfdfe
+NOT_FILE_I_MASK = 0xff7fbfdfeff7fbfdfeff
 
 @dataclasses.dataclass(slots=True)
 class Move:
@@ -149,8 +151,8 @@ class Move:
         file2 = uci[2].lower()
         rank2 = uci[3]
 
-        sq1 = FILE_NAMES.index(file1) * 9 + RANK_NAMES.index(rank1)
-        sq2 = FILE_NAMES.index(file2) * 9 + RANK_NAMES.index(rank2)
+        sq1 = RANK_NAMES.index(rank1) * 9 + FILE_NAMES.index(file1)
+        sq2 = RANK_NAMES.index(rank2) * 9 + FILE_NAMES.index(file2)
 
         capture = None
         mask = 1 << sq2
@@ -183,16 +185,16 @@ class Move:
         file2 = san[4].lower()
         rank2 = san[5]
 
-        sq1 = FILE_NAMES.index(file1) * 9 + RANK_NAMES.index(rank1)
-        sq2 = FILE_NAMES.index(file2) * 9 + RANK_NAMES.index(rank2)
+        sq1 = RANK_NAMES.index(rank1) * 9 + FILE_NAMES.index(file1)
+        sq2 = RANK_NAMES.index(rank2) * 9 + FILE_NAMES.index(file2)
 
         n = cls(sq1, sq2)
         n.resolve_capture(board)
         return n
 
     def uci(self) -> str:
-        file1, rank1 = divmod(self.from_sq, 9)
-        file2, rank2 = divmod(self.to_sq, 9)
+        rank1, file1 = divmod(self.from_sq, 9)
+        rank2, file2 = divmod(self.to_sq, 9)
 
         sq1 = f"{FILE_NAMES[file1]}{RANK_NAMES[rank1]}"
         sq2 = f"{FILE_NAMES[file2]}{RANK_NAMES[rank2]}"
@@ -200,8 +202,8 @@ class Move:
         return f"{sq1}{sq2}"
 
     def san(self, board: Board) -> str:
-        file1, rank1 = divmod(self.from_sq, 9)
-        file2, rank2 = divmod(self.to_sq, 9)
+        rank1, file1 = divmod(self.from_sq, 9)
+        rank2, file2 = divmod(self.to_sq, 9)
 
         sq1 = f"{FILE_NAMES[file1]}{RANK_NAMES[rank1]}"
         sq2 = f"{FILE_NAMES[file2]}{RANK_NAMES[rank2]}"
@@ -228,8 +230,6 @@ class Move:
 
     def is_capture(self) -> bool:
         return self.capture is not None
-
-    is_zeroing = is_capture
 
     def resolve_capture(self, board: Board) -> PieceType | None:
         capture = None
@@ -312,7 +312,7 @@ class Board:
                 if char.isnumeric():
                     file += int(char)
                 else:
-                    idx = file * 9 + rank
+                    idx = rank * 9 + file
                     match char:
                         case "R": rb_bb |= 1 << idx
                         case "P": pb_bb |= 1 << idx
@@ -339,7 +339,7 @@ class Board:
             fen += "/"
             num = 0
             for file in range(9):
-                idx = file * 9 + rank
+                idx = rank * 9 + file
                 mask = 1 << idx
                 piece = ""
                 if self.rb_bb & mask:
@@ -416,6 +416,9 @@ class Board:
                     self.pr_bb ^= add_piece
                 elif move.capture == SCISSORS:
                     self.sr_bb ^= add_piece
+            self.halfmove_clock = 0
+        else:
+            self.halfmove_clock += 1
 
         if self.rb_bb & remove_piece:
             self.rb_bb ^= move_xor
@@ -430,10 +433,6 @@ class Board:
         elif self.sr_bb & remove_piece:
             self.sr_bb ^= move_xor
 
-        if move.is_zeroing():
-            self.halfmove_clock = 0
-        else:
-            self.halfmove_clock += 1
         self.turn = not self.turn
 
     def undo(self) -> Move:
@@ -489,7 +488,7 @@ class Board:
         return self.rb_bb | self.pb_bb | self.sb_bb | self.rr_bb | self.pr_bb | self.sr_bb
 
     def is_draw(self) -> bool:
-        return self.halfmove_clock >= 200 # assuming a move == 2 ply - need clarification
+        return self.halfmove_clock >= 200
 
     def is_win(self, color: Color | None = None) -> bool:
         if color is None:
@@ -527,7 +526,7 @@ class Board:
             | (self.halfmove_clock << 487)
         )
 
-    def legal_moves(self) -> list[Move]: # to be improved
+    def legal_moves(self) -> list[Move]:
         if self.turn:
             self_rock = self.rb_bb
             self_paper = self.pb_bb
@@ -542,75 +541,114 @@ class Board:
             opp_rock = self.rb_bb
             opp_paper = self.pb_bb
             opp_scissors = self.sb_bb
-        free = (~self.full_board()) & FULL_BOARD
-        moves = []
-        for index in range(81):
-            for piecetype, pieces in enumerate((self_rock, self_paper, self_scissors)):
-                if pieces & (1 << index):
-                    if piecetype == ROCK:
-                        capture_free = free | opp_scissors
-                    elif piecetype == PAPER:
-                        capture_free = free | opp_rock
-                    else:
-                        capture_free = free | opp_paper
-                    right = (index % 9 != 8)
-                    left = (index % 9 != 0)
-                    up = (index // 9 != 8)
-                    down = (index // 9 != 0)
 
-                    if right and ((1 << (index + 1)) & capture_free):
-                        moves.append(Move(
-                            index,
-                            index + 1,
-                            CAPTURES[piecetype] if ((1 << (index + 1)) & free) == 0 else None))
-                    if left and ((1 << (index - 1)) & capture_free):
-                        moves.append(Move(
-                            index,
-                            index - 1,
-                            CAPTURES[piecetype] if ((1 << (index - 1)) & free) == 0 else None))
-                    if down and ((1 << (index - 9)) & capture_free):
-                        moves.append(Move(
-                            index,
-                            index - 9,
-                            CAPTURES[piecetype] if ((1 << (index - 9)) & free) == 0 else None))
-                    if up and ((1 << (index + 9)) & capture_free):
-                        moves.append(Move(
-                            index,
-                            index + 9,
-                            CAPTURES[piecetype] if ((1 << (index + 9)) & free) == 0 else None))
-                    if right and down and ((1 << (index - 8)) & capture_free):
-                        moves.append(Move(
-                            index,
-                            index - 8,
-                            CAPTURES[piecetype] if ((1 << (index - 8)) & free) == 0 else None))
-                    if right and up and ((1 << (index + 10)) & capture_free):
-                        moves.append(Move(
-                            index,
-                            index + 10,
-                            CAPTURES[piecetype] if ((1 << (index + 10)) & free) == 0 else None))
-                    if left and down and ((1 << (index - 10)) & capture_free):
-                        moves.append(Move(
-                            index,
-                            index - 10,
-                            CAPTURES[piecetype] if ((1 << (index - 10)) & free) == 0 else None))
-                    if left and up and ((1 << (index + 8)) & capture_free):
-                        moves.append(Move(
-                            index,
-                            index + 8,
-                            CAPTURES[piecetype] if ((1 << (index + 8)) & free) == 0 else None))
+        free = (BOARD_MASK ^ self.full_board()) & BOARD_MASK
+        free_rock = free | opp_scissors
+        free_paper = free | opp_rock
+        free_scissors = free | opp_paper
+        moves = []
+
+        for change, bb in (
+            (9, (self_rock << 9) & free_rock),
+            (10, (self_rock << 10) & NOT_FILE_A_MASK & free_rock),
+            (1, (self_rock << 1) & NOT_FILE_A_MASK & free_rock),
+            (-8, (self_rock >> 8) & NOT_FILE_A_MASK & free_rock),
+            (-9, (self_rock >> 9) & free_rock),
+            (-10, (self_rock >> 10) & NOT_FILE_I_MASK & free_rock),
+            (-1, (self_rock >> 1) & NOT_FILE_I_MASK & free_rock),
+            (8, (self_rock << 8) & NOT_FILE_I_MASK & free_rock),
+
+            (9, (self_paper << 9) & free_paper),
+            (10, (self_paper << 10) & NOT_FILE_A_MASK & free_paper),
+            (1, (self_paper << 1) & NOT_FILE_A_MASK & free_paper),
+            (-8, (self_paper >> 8) & NOT_FILE_A_MASK & free_paper),
+            (-9, (self_paper >> 9) & free_paper),
+            (-10, (self_paper >> 10) & NOT_FILE_I_MASK & free_paper),
+            (-1, (self_paper >> 1) & NOT_FILE_I_MASK & free_paper),
+            (8, (self_paper << 8) & NOT_FILE_I_MASK & free_paper),
+
+            (9, (self_scissors << 9) & free_scissors),
+            (10, (self_scissors << 10) & NOT_FILE_A_MASK & free_scissors),
+            (1, (self_scissors << 1) & NOT_FILE_A_MASK & free_scissors),
+            (-8, (self_scissors >> 8) & NOT_FILE_A_MASK & free_scissors),
+            (-9, (self_scissors >> 9) & free_scissors),
+            (-10, (self_scissors >> 10) & NOT_FILE_I_MASK & free_scissors),
+            (-1, (self_scissors >> 1) & NOT_FILE_I_MASK & free_scissors),
+            (8, (self_scissors << 8) & NOT_FILE_I_MASK & free_scissors)
+        ):
+            while bb > 0:
+                lsb = bb & -bb
+                
+                to_sq = lsb.bit_length() - 1
+                from_sq = to_sq - change
+
+                move = Move(from_sq, to_sq)
+                move.resolve_capture(self)
+                moves.append(move)
+
+                bb &= bb - 1
 
         return moves
 
-    def num_legal_moves(self) -> int: # to be improved significantly
-        return len(self.legal_moves())
+    def num_legal_moves(self) -> int:
+        if self.turn:
+            self_rock = self.rb_bb
+            self_paper = self.pb_bb
+            self_scissors = self.sb_bb
+            opp_rock = self.rr_bb
+            opp_paper = self.pr_bb
+            opp_scissors = self.sr_bb
+        else:
+            self_rock = self.rr_bb
+            self_paper = self.pr_bb
+            self_scissors = self.sr_bb
+            opp_rock = self.rb_bb
+            opp_paper = self.pb_bb
+            opp_scissors = self.sb_bb
 
-    def as_line(self, starting_fen: str = STARTING_FEN, meafed: bool = False) -> str:
+        free = (BOARD_MASK ^ self.full_board()) & BOARD_MASK
+        free_rock = free | opp_scissors
+        free_paper = free | opp_rock
+        free_scissors = free | opp_paper
+
+        moves = (
+            ((self_rock << 9) & free_rock).bit_count() +
+            ((self_rock << 10) & NOT_FILE_A_MASK & free_rock).bit_count() +
+            ((self_rock << 1) & NOT_FILE_A_MASK & free_rock).bit_count() +
+            ((self_rock >> 8) & NOT_FILE_A_MASK & free_rock).bit_count() +
+            ((self_rock >> 9) & free_rock).bit_count() +
+            ((self_rock >> 10) & NOT_FILE_I_MASK & free_rock).bit_count() +
+            ((self_rock >> 1) & NOT_FILE_I_MASK & free_rock).bit_count() +
+            ((self_rock << 8) & NOT_FILE_I_MASK & free_rock).bit_count() +
+
+            ((self_paper << 9) & free_paper).bit_count() +
+            ((self_paper << 10) & NOT_FILE_A_MASK & free_paper).bit_count() +
+            ((self_paper << 1) & NOT_FILE_A_MASK & free_paper).bit_count() +
+            ((self_paper >> 8) & NOT_FILE_A_MASK & free_paper).bit_count() +
+            ((self_paper >> 9) & free_paper).bit_count() +
+            ((self_paper >> 10) & NOT_FILE_I_MASK & free_paper).bit_count() +
+            ((self_paper >> 1) & NOT_FILE_I_MASK & free_paper).bit_count() +
+            ((self_paper << 8) & NOT_FILE_I_MASK & free_paper).bit_count() +
+
+            ((self_scissors << 9) & free_scissors).bit_count() +
+            ((self_scissors << 10) & NOT_FILE_A_MASK & free_scissors).bit_count() +
+            ((self_scissors << 1) & NOT_FILE_A_MASK & free_scissors).bit_count() +
+            ((self_scissors >> 8) & NOT_FILE_A_MASK & free_scissors).bit_count() +
+            ((self_scissors >> 9) & free_scissors).bit_count() +
+            ((self_scissors >> 10) & NOT_FILE_I_MASK & free_scissors).bit_count() +
+            ((self_scissors >> 1) & NOT_FILE_I_MASK & free_scissors).bit_count() +
+            ((self_scissors << 8) & NOT_FILE_I_MASK & free_scissors).bit_count()
+        )
+        
+        return moves
+
+    def as_line(self, starting_fen: str = STARTING_FEN, meafify: bool = False) -> str:
         line = ""
         test_b = Board(starting_fen)
         for n, move in enumerate(self.move_stack):
             if n % 2 == 0:
                 line += f"{n // 2 + 1}. "
-            if not meafed:
+            if not meafify:
                 line += f"{move.san(test_b)} "
             else:
                 line += f"{move.san(test_b)[1:].upper()} "
@@ -622,7 +660,7 @@ class Board:
         for rank in range(8, -1, -1):
             str_board += f"{rank + 1} "
             for file in range(9):
-                index = file * 9 + rank
+                index = rank * 9 + file
                 mask = 1 << index
                 if self.rb_bb & mask:
                     str_board += "R "
