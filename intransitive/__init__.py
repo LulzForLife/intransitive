@@ -4,7 +4,7 @@ __author__ = "Kiran Lowe"
 
 __email__ = "kiranmjlowe@gmail.com"
 
-__version__ = "1.1.0"
+__version__ = "1.1.1"
 
 from typing import TypeAlias, Self
 
@@ -227,6 +227,11 @@ class Move:
 
     def __str__(self) -> str:
         return self.uci()
+
+    def __hash__(self) -> int:
+        if self.capture is None:
+            return self.from_sq + (self.to_sq * 81)
+        return self.from_sq + (self.to_sq * 81) + ((self.capture + 1) * 81 * 81)
 
     def is_capture(self) -> bool:
         return self.capture is not None
@@ -583,7 +588,7 @@ class Board:
                 from_sq = to_sq - change
 
                 move = Move(from_sq, to_sq)
-                move.resolve_capture(self)
+                move.capture = move.resolve_capture(self)
                 moves.append(move)
 
                 bb &= bb - 1
